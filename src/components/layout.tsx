@@ -1,5 +1,10 @@
 import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import {
+  createTheme,
+  styled,
+  ThemeProvider,
+  useTheme,
+} from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -18,6 +23,10 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import theme from "@/styles/theme";
+import { useMediaQuery } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -70,9 +79,70 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export default function Layout({
-  children,
-}: React.PropsWithChildren) {
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+
+const ColorMode = () => {
+  const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "right",
+      }}
+    >
+      <IconButton
+        sx={{ ml: 1 }}
+        onClick={colorMode.toggleColorMode}
+        color="inherit"
+      >
+        {theme.palette.mode === "dark" ? (
+          <Brightness7Icon />
+        ) : (
+          <Brightness4Icon />
+        )}
+      </IconButton>
+    </Box>
+  );
+};
+export default function Layout({ children }: React.PropsWithChildren) {
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const [mode, setMode] = React.useState<"light" | "dark">(
+    prefersDarkMode ? "dark" : "light"
+  );
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+      },
+    }),
+    []
+  );
+
+  const newTheme = React.useMemo(
+    () =>
+      createTheme({
+        ...theme,
+        palette: {
+          ...theme.palette,
+          mode,
+        },
+      }),
+    [mode]
+  );
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={newTheme}>
+        <CssBaseline />
+        <AppDrawer>{children}</AppDrawer>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+  );
+}
+
+const AppDrawer = ({ children }: React.PropsWithChildren) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -101,6 +171,7 @@ export default function Layout({
           <Typography variant="h6" noWrap component="div">
             Pix
           </Typography>
+          <ColorMode />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -154,8 +225,8 @@ export default function Layout({
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        {children}
+        <Box sx={{ display: "flex", minHeight: "100vh" }}>{children}</Box>
       </Main>
     </Box>
   );
-}
+};
