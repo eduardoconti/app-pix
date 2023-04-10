@@ -1,6 +1,5 @@
 import Layout from "@/components/layout";
 import RelayEnvironment from "@/relay/RelayEnvironment";
-import "@/styles/globals.css";
 
 import type { AppProps } from "next/app";
 

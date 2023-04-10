@@ -25,8 +25,8 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import theme from "@/styles/theme";
 import { useMediaQuery } from "@mui/material";
+import { red } from "@mui/material/colors";
 
 const drawerWidth = 240;
 
@@ -124,9 +124,20 @@ export default function Layout({ children }: React.PropsWithChildren) {
   const newTheme = React.useMemo(
     () =>
       createTheme({
-        ...theme,
         palette: {
-          ...theme.palette,
+          primary: {
+            main: "#03d69d",
+          },
+          secondary: {
+            main: "rgb(248, 189, 7)",
+          },
+          error: {
+            main: red.A400,
+          },
+          background: {
+            default: mode === "dark" ? "#121212" : "#FAFAFA",
+            paper: mode === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)",
+          },
           mode,
         },
       }),
@@ -225,7 +236,16 @@ const AppDrawer = ({ children }: React.PropsWithChildren) => {
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Box sx={{ display: "flex", minHeight: "100vh" }}>{children}</Box>
+        <Box
+          sx={{
+            display: "flex",
+            minHeight: "100vh",
+            justifyContent: "center",
+            backgroundColor: theme.palette.background.default,
+          }}
+        >
+          {children}
+        </Box>
       </Main>
     </Box>
   );
