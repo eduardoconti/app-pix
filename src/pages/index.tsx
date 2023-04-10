@@ -1,12 +1,28 @@
 import Head from "next/head";
-import styles from "@/styles/Home.module.css";
 import { Box } from "@mui/material";
+import { graphql, loadQuery, usePreloadedQuery /* ... */ } from "react-relay";
+import { environment } from "@/relay/environment";
 
-export default function Home() {
+const chargeQuery = graphql`
+  query pagesChargeQuery {
+    findAll {
+      id
+      amount
+      status
+    }
+  }
+`;
+const chargeQueryReference = loadQuery(environment, chargeQuery, {});
+export default function Home(props: any) {
+  try {
+    const data = usePreloadedQuery(chargeQuery, chargeQueryReference);
+  } catch (error) {
+  }
+
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>Dashboard</title>
       </Head>
       <Box></Box>
     </>
