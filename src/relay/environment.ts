@@ -1,13 +1,8 @@
-import {
-  Store,
-  RecordSource,
-  Environment,
-  Network,
-} from "relay-runtime";
+import { Store, RecordSource, Environment, Network } from 'relay-runtime';
 
-import { withHydrateDatetime } from "relay-nextjs/date";
-import { hydrateRelayEnvironment } from "relay-nextjs";
-import fetchGraphQL from "@/relay/fetch";
+import { withHydrateDatetime } from 'relay-nextjs/date';
+import { hydrateRelayEnvironment } from 'relay-nextjs';
+import fetchGraphQL from '@/relay/fetch';
 export const environment = new Environment({
   network: createClientNetwork(),
   store: new Store(new RecordSource()),
@@ -15,18 +10,18 @@ export const environment = new Environment({
 
 async function fetchRelay(params: any, variables: any) {
   console.log(
-    `fetching query ${params.name} with ${JSON.stringify(variables)}`
+    `fetching query ${params.name} with ${JSON.stringify(variables)}`,
   );
   return fetchGraphQL(params.text, variables);
 }
 
 export function createClientNetwork() {
   return Network.create(async (params, variables) => {
-    const response = await fetch("/api/graphql", {
-      method: "POST",
-      credentials: "include",
+    const response = await fetch('/api/graphql', {
+      method: 'POST',
+      credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         query: params.text,
@@ -41,7 +36,7 @@ export function createClientNetwork() {
 
 let clientEnv: Environment | undefined;
 export function getClientEnvironment() {
-  if (typeof window === "undefined") return null;
+  if (typeof window === 'undefined') return null;
 
   if (clientEnv == null) {
     clientEnv = new Environment({

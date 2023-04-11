@@ -11,6 +11,7 @@ import { AuthProvider } from "@/context/auth-context";
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   createClientEnvironment: () => clientEnv!,
 });
 
@@ -18,6 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const theme = useTheme();
   const relayProps = getRelayProps(pageProps, initialPreloadedQuery);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const env = relayProps.preloadedQuery?.environment ?? clientEnv!;
 
   return (

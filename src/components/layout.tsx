@@ -80,6 +80,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 const ColorMode = () => {

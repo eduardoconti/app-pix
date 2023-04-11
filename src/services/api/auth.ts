@@ -1,5 +1,5 @@
-import { api } from "@/services/api/api";
-import jwt from "jwt-decode";
+import { api } from '@/services/api/api';
+import jwt from 'jwt-decode';
 type SignInRequestData = {
   email: string;
   password: string;
@@ -15,7 +15,7 @@ export async function signInRequest({ email, password }: SignInRequestData) {
     });
 
     const { userName, userId } = jwt<{ userName: string; userId: string }>(
-      access_token
+      access_token,
     );
     return {
       user: {
@@ -26,7 +26,7 @@ export async function signInRequest({ email, password }: SignInRequestData) {
     };
   } catch (error: any) {
     console.log(error.response?.data);
-    throw new Error("Api error");
+    throw new Error('Api error');
   } finally {
   }
 }
