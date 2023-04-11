@@ -19,7 +19,11 @@ echo '_______  _______  ________
 |______| |_|      |______|'
 echo ''
 echo ''
+echo '  -- install dependencies --  \n'
+yarn
 
+echo '  -- create .env.local --  \n'
+cp env.example .env.local
 echo '  -- generate relay queries  -- \n'
 yarn relay
 echo '  -- build  -- \n'
