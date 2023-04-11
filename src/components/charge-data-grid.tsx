@@ -1,9 +1,11 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { graphql, loadQuery, usePreloadedQuery } from "react-relay";
+import { loadQuery, usePreloadedQuery } from "react-relay";
 import { environment } from "@/relay/environment";
 import { Chip, Theme, useTheme } from "@mui/material";
+import { chargeQuery } from "@/queries/charge.query";
+import { chargeDataGridQuery } from "@/queries/__generated__/chargeDataGridQuery.graphql";
 
 const ChipStatus = ({
   value,
@@ -64,21 +66,13 @@ const columns: GridColDef[] = [
   },
 ];
 
-const chargeQuery = graphql`
-  query chargeDataGridQuery {
-    findAll {
-      id
-      amount
-      status
-      created_at
-      e2e_id
-      provider
-    }
-  }
-`;
-const chargeQueryReference = loadQuery(environment, chargeQuery, {});
-export default function DataGridDemo() {
-  const data = usePreloadedQuery<any>(chargeQuery, chargeQueryReference);
+const chargeQueryReference = loadQuery<chargeDataGridQuery>(
+  environment,
+  chargeQuery,
+  {}
+);
+export default function DataGridCharge() {
+  const data = usePreloadedQuery(chargeQuery, chargeQueryReference);
   const theme = useTheme();
 
   return (

@@ -1,7 +1,12 @@
 import Head from "next/head";
-import { Box, Typography, useTheme } from "@mui/material";
-import DataGridDemo from "@/components/charge-data-grid";
-import { Suspense } from "react";
+import { Box, CircularProgress, Typography, useTheme } from "@mui/material";
+import React, { Suspense } from "react";
+
+import dynamic from "next/dynamic";
+
+const DataGrid = dynamic(() => import("@/components/charge-data-grid"), {
+  ssr: false,
+});
 
 export default function Home() {
   const theme = useTheme();
@@ -14,8 +19,9 @@ export default function Home() {
         <Typography variant="h3" sx={{ marginBottom: theme.spacing(1) }}>
           Dashboard
         </Typography>
-
-        <DataGridDemo />
+        <Suspense fallback={<CircularProgress />}>
+          <DataGrid />
+        </Suspense>
       </Box>
     </>
   );
