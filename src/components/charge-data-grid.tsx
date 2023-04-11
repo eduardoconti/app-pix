@@ -2,11 +2,12 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { loadQuery, usePreloadedQuery } from "react-relay";
-import { environment } from "@/relay/environment";
+import { getClientEnvironment } from "@/relay/environment";
 import { Chip, Theme, useTheme } from "@mui/material";
 import { chargeQuery } from "@/queries/charge.query";
 import { chargeDataGridQuery } from "@/queries/__generated__/chargeDataGridQuery.graphql";
-
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment";
+const clientEnv = getClientEnvironment();
 const ChipStatus = ({
   value,
 }: {
@@ -67,7 +68,7 @@ const columns: GridColDef[] = [
 ];
 
 const chargeQueryReference = loadQuery<chargeDataGridQuery>(
-  environment,
+  clientEnv as RelayModernEnvironment,
   chargeQuery,
   {}
 );

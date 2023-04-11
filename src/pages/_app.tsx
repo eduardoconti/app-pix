@@ -7,6 +7,7 @@ import { useTheme } from "@mui/material";
 import { getInitialPreloadedQuery, getRelayProps } from "relay-nextjs/app";
 import { getClientEnvironment } from "@/relay/environment";
 import { RelayEnvironmentProvider } from "react-relay";
+import { AuthProvider } from "@/context/auth-context";
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({
@@ -44,9 +45,11 @@ export default function App({ Component, pageProps }: AppProps) {
       }
     >
       <RelayEnvironmentProvider environment={env}>
-        <Layout>
-          <Component {...pageProps} {...relayProps} />
-        </Layout>
+        <AuthProvider>
+          <Layout>
+            <Component {...pageProps} {...relayProps} />
+          </Layout>
+        </AuthProvider>
       </RelayEnvironmentProvider>
     </ErrorBoundary>
   );

@@ -27,6 +27,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { useMediaQuery } from "@mui/material";
 import { red } from "@mui/material/colors";
+import { AuthContext } from "@/context/auth-context";
 
 const drawerWidth = 240;
 
@@ -107,6 +108,24 @@ const ColorMode = () => {
     </Box>
   );
 };
+
+const UserInfo = () => {
+  const { user } = React.useContext(AuthContext);
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flex: 20,
+        alignItems: "center",
+        justifyContent: "right",
+      }}
+    >
+      <Typography variant="h6" noWrap component="div">
+        {user?.userName}
+      </Typography>
+    </Box>
+  );
+};
 export default function Layout({ children }: React.PropsWithChildren) {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const [mode, setMode] = React.useState<"light" | "dark">(
@@ -136,7 +155,10 @@ export default function Layout({ children }: React.PropsWithChildren) {
           },
           background: {
             default: mode === "dark" ? "#121212" : "#FAFAFA",
-            paper: mode === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)",
+            paper:
+              mode === "dark"
+                ? "rgba(255, 255, 255, 0.05)"
+                : "rgba(0, 0, 0, 0.05)",
           },
           mode,
         },
@@ -182,6 +204,7 @@ const AppDrawer = ({ children }: React.PropsWithChildren) => {
           <Typography variant="h6" noWrap component="div">
             Pix
           </Typography>
+          <UserInfo />
           <ColorMode />
         </Toolbar>
       </AppBar>
@@ -220,7 +243,6 @@ const AppDrawer = ({ children }: React.PropsWithChildren) => {
             </ListItem>
           ))}
         </List>
-      
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
