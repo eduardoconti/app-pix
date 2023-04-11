@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useMemo } from "react";
 import { RelayEnvironmentProvider } from "react-relay";
 import { environment } from "./environment";
 
@@ -8,13 +7,12 @@ export default function RelayEnvironment({
 }: {
   children: React.ReactNode;
 }): React.ReactElement {
-  const env = useMemo(() => {
-    return environment;
-  }, []);
 
   return (
-    <RelayEnvironmentProvider environment={env}>
-      {children}
+    <RelayEnvironmentProvider environment={environment}>
+      <React.Suspense fallback={<h1>Loading profile...</h1>}>
+        {children}
+      </React.Suspense>
     </RelayEnvironmentProvider>
   );
 }

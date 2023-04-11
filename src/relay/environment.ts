@@ -3,24 +3,36 @@ import {
   RecordSource,
   Environment,
   Network,
-  Observable,
+  // Observable,
 } from "relay-runtime";
-import type { FetchFunction, IEnvironment } from "relay-runtime";
+//import type { FetchFunction } from "relay-runtime";
+import fetchGraphQL from "@/relay/fetch";
 
-const fetchFn: FetchFunction = (params, variables) => {
-  const response = fetch("http://localhost:3000/graphql", {
-    method: "POST",
-    headers: [["Content-Type", "application/json"]],
-    body: JSON.stringify({
-      query: params.text,
-      variables,
-    }),
-  });
+async function fetchRelay(params: any, variables: any) {
+  console.log(
+    `fetching query ${params.name} with ${JSON.stringify(variables)}`
+  );
+  return fetchGraphQL(params.text, variables);
+}
 
-  return Observable.from(response.then((data) => data.json()));
-};
+// const fetchFn: FetchFunction = (params, variables) => {
+//   const response = fetch("http://localhost:3000/graphql", {
+//     method: "POST",
+//     headers: [["Content-Type", "application/json"]],
+//     body: JSON.stringify({
+//       query: params.text,
+//       variables,
+//     }),
+//   });
+
+//   return Observable.from(
+//     response.then((data) => {
+//       return data?.json() ?? [];
+//     })
+//   );
+// };
 
 export const environment = new Environment({
-  network: Network.create(fetchFn),
+  network: Network.create(fetchRelay),
   store: new Store(new RecordSource()),
 });
