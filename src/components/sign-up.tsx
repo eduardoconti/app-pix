@@ -9,6 +9,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { AuthContext } from '@/context/auth-context';
+import AlertMessage from '@/components/alert';
+import { CircularProgress } from '@mui/material';
 
 function Copyright(props: any) {
   return (
@@ -29,7 +31,7 @@ function Copyright(props: any) {
 }
 
 export default function SignUp() {
-  const { signUp } = React.useContext(AuthContext);
+  const { signUp, error, clearError, loading } = React.useContext(AuthContext);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -43,6 +45,13 @@ export default function SignUp() {
 
   return (
     <Container component="main" maxWidth="xs">
+      <AlertMessage
+        open={error ? true : false}
+        title={error?.title}
+        detail={error?.detail}
+        severity="error"
+        onClose={clearError}
+      />
       <Box
         sx={{
           display: 'flex',
@@ -91,14 +100,19 @@ export default function SignUp() {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign Up
-          </Button>
+          {loading ? (
+            <CircularProgress sx={{ mt: 3, mb: 2 }} />
+          ) : (
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button>
+          )}
+
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="/signin" variant="body2">

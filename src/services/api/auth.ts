@@ -56,8 +56,12 @@ export async function signUpRequest({
       webhook_host,
     });
   } catch (error: any) {
-    console.log(error.response?.data);
-    throw new Error('Api error');
+    if (error?.response?.data) {
+      const response = new ApiErrorResponse();
+      Object.assign(response, error.response.data);
+      throw response;
+    }
+    throw new Error(error?.message ?? 'Internal server error');
   } finally {
   }
 }

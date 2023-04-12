@@ -12,12 +12,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { AuthContext } from '@/context/auth-context';
 import {
-  Alert,
-  AlertColor,
-  AlertTitle,
   CircularProgress,
-  Snackbar,
 } from '@mui/material';
+import AlertMessage from '@/components/alert';
 
 export default function SignIn() {
   const { signIn, loading, error, clearError } = React.useContext(AuthContext);
@@ -126,35 +123,4 @@ function Copyright(props: any) {
       {'.'}
     </Typography>
   );
-}
-
-function AlertMessage({
-  open,
-  severity,
-  title,
-  detail,
-  onClose,
-}: {
-  open: boolean;
-  severity?: AlertColor;
-  title?: string;
-  detail?: string;
-  onClose: () => void;
-}) {
-  return open ? (
-    <Snackbar
-      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      open={open}
-      autoHideDuration={3000}
-      onClose={() => onClose()}
-    >
-      <Alert
-        severity={severity}
-        onClose={() => onClose()}
-      >
-        <AlertTitle>{title}</AlertTitle>
-        {detail}
-      </Alert>
-    </Snackbar>
-  ) : null;
 }

@@ -84,13 +84,29 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }
 
   async function signUp({ email, password, webhook_host, name }: SignUpData) {
-    await signUpRequest({
-      email,
-      password,
-      webhook_host,
-      name,
-    });
-    Router.push('/signin');
+    try {
+      setLoading(true);
+      await signUpRequest({
+        email,
+        password,
+        webhook_host,
+        name,
+      });
+      Router.push('/signin');
+    } catch (error: any) {
+      if (error instanceof ApiErrorResponse) {
+        setError(error);
+      } else {
+        setError({
+          status: 500,
+          title: 'Internal Error',
+          detail: error?.message,
+          type: '',
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   function logout() {
