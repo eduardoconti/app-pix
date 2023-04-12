@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useEffect, useState } from 'react';
-import { parseCookies, setCookie } from 'nookies';
+import { destroyCookie, parseCookies, setCookie } from 'nookies';
 import Router from 'next/router';
 import { signInRequest, signUpRequest } from '@/services/api/auth';
 import { api } from '@/services/api/api';
@@ -26,6 +26,7 @@ type AuthContextType = {
   user: User | null;
   signIn: (data: SignInData) => Promise<void>;
   signUp: (data: SignUpData) => Promise<void>;
+  logout: () => void;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -71,8 +72,15 @@ export function AuthProvider({ children }: PropsWithChildren) {
     Router.push('/signin');
   }
 
+  function logout() {
+    destroyCookie(undefined, 'nextauth.token');
+    Router.push('/');
+  }
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn, signUp }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated, signIn, signUp, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

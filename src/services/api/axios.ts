@@ -9,10 +9,9 @@ export function getAPIClient(ctx?: any) {
   });
 
   api.interceptors.request.use((config) => {
-    console.log(config);
-
     return config;
   });
+
   api.defaults.headers['Content-Type'] = `application/json`;
   if (token) {
     api.defaults.headers['Authorization'] = `Bearer ${token}`;
