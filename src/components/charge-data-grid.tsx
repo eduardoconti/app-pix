@@ -1,17 +1,17 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { loadQuery, usePreloadedQuery } from "react-relay";
-import { getClientEnvironment } from "@/relay/environment";
-import { Chip, Theme, useTheme } from "@mui/material";
-import { chargeQuery } from "@/queries/charge.query";
-import { chargeDataGridQuery } from "@/queries/__generated__/chargeDataGridQuery.graphql";
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { loadQuery, usePreloadedQuery } from 'react-relay';
+import { getClientEnvironment } from '@/relay/environment';
+import { Chip, Theme, Typography, useTheme } from '@mui/material';
+import { chargeQuery } from '@/queries/charge.query';
+import { chargeDataGridQuery } from '@/queries/__generated__/chargeDataGridQuery.graphql';
+import RelayModernEnvironment from 'relay-runtime/lib/store/RelayModernEnvironment';
 const clientEnv = getClientEnvironment();
 const ChipStatus = ({
   value,
 }: {
-  value: "PAYED" | "ACTIVE" | "FAILED" | "PENDING";
+  value: 'PAYED' | 'ACTIVE' | 'FAILED' | 'PENDING';
 }) => {
   const theme = useTheme();
   return (
@@ -22,47 +22,58 @@ const ChipStatus = ({
   );
 };
 const retrievChipColor = (
-  status: "PAYED" | "ACTIVE" | "FAILED" | "PENDING",
-  theme: Theme
+  status: 'PAYED' | 'ACTIVE' | 'FAILED' | 'PENDING',
+  theme: Theme,
 ) => {
-  const colorType = theme.palette.mode === "dark" ? "dark" : "light";
-  if (status === "PAYED") {
+  const colorType = theme.palette.mode === 'dark' ? 'dark' : 'light';
+  if (status === 'PAYED') {
     return theme.palette.primary[`${colorType}`];
   }
-  if (status === "ACTIVE" || status === "PENDING") {
+  if (status === 'ACTIVE' || status === 'PENDING') {
     return theme.palette.warning[`${colorType}`];
   }
 
-  if (status === "FAILED") {
+  if (status === 'FAILED') {
     return theme.palette.error[`${colorType}`];
   }
 
-  return "default";
+  return 'default';
 };
 const columns: GridColDef[] = [
-  { field: "created_at", headerName: "CreatedAt", flex: 1 },
-  { field: "id", headerName: "ID", flex: 1 },
   {
-    field: "provider",
-    headerName: "Provider",
+    field: 'created_at',
+    headerName: 'CreatedAt',
+    flex: 1,
+    renderCell: ({ formattedValue }) => {
+      return (
+        <Typography variant="subtitle2">
+          {new Date(formattedValue as string).toLocaleString()}
+        </Typography>
+      );
+    },
+  },
+  { field: 'id', headerName: 'ID', flex: 2 },
+  {
+    field: 'provider',
+    headerName: 'Provider',
     flex: 1,
   },
   {
-    field: "amount",
-    headerName: "Amount",
+    field: 'amount',
+    headerName: 'Amount',
     flex: 1,
   },
   {
-    field: "status",
-    headerName: "Status",
+    field: 'status',
+    headerName: 'Status',
     flex: 1,
     renderCell: ({ formattedValue }) => {
       return <ChipStatus value={formattedValue} />;
     },
   },
   {
-    field: "e2e_id",
-    headerName: "E2E",
+    field: 'e2e_id',
+    headerName: 'E2E',
     flex: 2,
   },
 ];
@@ -70,7 +81,7 @@ const columns: GridColDef[] = [
 const chargeQueryReference = loadQuery<chargeDataGridQuery>(
   clientEnv as RelayModernEnvironment,
   chargeQuery,
-  {}
+  {},
 );
 export default function DataGridCharge() {
   const data = usePreloadedQuery(chargeQuery, chargeQueryReference);
@@ -98,7 +109,7 @@ export default function DataGridCharge() {
         checkboxSelection
         disableRowSelectionOnClick
         sx={{
-          border: "none",
+          border: 'none',
           color: theme.palette.text.primary,
         }}
       />

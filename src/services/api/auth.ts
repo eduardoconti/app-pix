@@ -5,6 +5,13 @@ type SignInRequestData = {
   password: string;
 };
 
+type SignUpRequestData = {
+  name: string;
+  email: string;
+  password: string;
+  webhook_host?: { type: string; host: string }[];
+};
+
 export async function signInRequest({ email, password }: SignInRequestData) {
   try {
     const {
@@ -31,13 +38,22 @@ export async function signInRequest({ email, password }: SignInRequestData) {
   }
 }
 
-// export async function recoverUserInformation() {
-//   await delay();
-
-//   return {
-//     user: {
-//       userName: "Eduardo",
-//       userId: "es.eduardoconti@gmail.com",
-//     },
-//   };
-// }
+export async function signUpRequest({
+  email,
+  password,
+  name,
+  webhook_host,
+}: SignUpRequestData) {
+  try {
+    await api.post(`/user`, {
+      email,
+      password,
+      name,
+      webhook_host,
+    });
+  } catch (error: any) {
+    console.log(error.response?.data);
+    throw new Error('Api error');
+  } finally {
+  }
+}

@@ -1,9 +1,9 @@
-import { createContext, PropsWithChildren, useEffect, useState } from "react";
-import { parseCookies, setCookie } from "nookies";
-import Router from "next/router";
-import { signInRequest } from "@/services/api/auth";
-import { api } from "@/services/api/api";
-import jwt from "jwt-decode";
+import { createContext, PropsWithChildren, useEffect, useState } from 'react';
+import { parseCookies, setCookie } from 'nookies';
+import Router from 'next/router';
+import { signInRequest, signUpRequest } from '@/services/api/auth';
+import { api } from '@/services/api/api';
+import jwt from 'jwt-decode';
 type User = {
   userName: string;
   userId: string;
@@ -14,10 +14,18 @@ type SignInData = {
   password: string;
 };
 
+type SignUpData = {
+  name: string;
+  email: string;
+  password: string;
+  webhook_host?: { type: string; host: string }[];
+};
+
 type AuthContextType = {
   isAuthenticated: boolean;
   user: User | null;
   signIn: (data: SignInData) => Promise<void>;
+  signUp: (data: SignUpData) => Promise<void>;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -28,11 +36,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const isAuthenticated = !!user;
 
   useEffect(() => {
-    const { "nextauth.token": token } = parseCookies();
+    const { 'nextauth.token': token } = parseCookies();
 
     if (token) {
       const { userName, userId } = jwt<{ userName: string; userId: string }>(
-        token
+        token,
       );
       setUser({ userId, userName });
     }
@@ -44,17 +52,27 @@ export function AuthProvider({ children }: PropsWithChildren) {
       password,
     });
 
-    setCookie(undefined, "nextauth.token", user.token, {
+    setCookie(undefined, 'nextauth.token', user.token, {
       maxAge: 60 * 60 * 1, // 1 hour
     });
 
-    api.defaults.headers["Authorization"] = `Bearer ${user.token}`;
+    api.defaults.headers['Authorization'] = `Bearer ${user.token}`;
     setUser(user);
-    Router.push("/");
+    Router.push('/');
+  }
+
+  async function signUp({ email, password, webhook_host, name }: SignUpData) {
+    await signUpRequest({
+      email,
+      password,
+      webhook_host,
+      name,
+    });
+    Router.push('/signin');
   }
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, signIn, signUp }}>
       {children}
     </AuthContext.Provider>
   );

@@ -203,7 +203,7 @@ const AppDrawer = ({ children }: React.PropsWithChildren) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Pix
+            Woovi Pix
           </Typography>
           <UserInfo />
           <ColorMode />
