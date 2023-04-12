@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "relay": "relay-compiler",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@babel/core": "^7.21.4",
@@ -46,6 +47,7 @@
     "babel-plugin-relay": "^15.0.0",
     "eslint-plugin-prettier": "^4.2.1",
     "graphql": "^16.6.0",
+    "husky": "^8.0.3",
     "prettier": "^2.8.7",
     "relay-compiler": "^15.0.0"
   }
