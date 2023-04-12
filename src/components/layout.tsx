@@ -134,11 +134,8 @@ export default function Layout({ children }: React.PropsWithChildren) {
             main: red.A400,
           },
           background: {
-            default: mode === 'dark' ? '#121212' : '#FAFAFA',
-            paper:
-              mode === 'dark'
-                ? 'rgba(255, 255, 255, 0.05)'
-                : 'rgba(0, 0, 0, 0.05)',
+            default: mode === 'dark' ? '#121212' : '#F7F7F7',
+            paper: mode === 'dark' ? '#1F1F1F' : '#FEFEFE',
           },
           mode,
         },
