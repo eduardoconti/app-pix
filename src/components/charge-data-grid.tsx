@@ -7,6 +7,7 @@ import { Chip, Theme, Typography, useTheme } from '@mui/material';
 import { chargeQuery } from '@/queries/charge.query';
 import { chargeDataGridQuery } from '@/queries/__generated__/chargeDataGridQuery.graphql';
 import RelayModernEnvironment from 'relay-runtime/lib/store/RelayModernEnvironment';
+import { amountBrl } from '@/services/utils/amount';
 const clientEnv = getClientEnvironment();
 const ChipStatus = ({
   value,
@@ -17,8 +18,14 @@ const ChipStatus = ({
   return (
     <Chip
       label={value}
-      sx={{ backgroundColor: retrievChipColor(value, theme) }}
-    ></Chip>
+      sx={{
+        backgroundColor: retrievChipColor(value, theme),
+        alignItems: 'center',
+        justifyContent: 'center',
+        justifyItems: 'center',
+        alignContent: 'center',
+      }}
+    />
   );
 };
 const retrievChipColor = (
@@ -42,7 +49,7 @@ const retrievChipColor = (
 const columns: GridColDef[] = [
   {
     field: 'created_at',
-    headerName: 'CreatedAt',
+    headerName: 'Created',
     flex: 1,
     renderCell: ({ formattedValue }) => {
       return (
@@ -52,7 +59,7 @@ const columns: GridColDef[] = [
       );
     },
   },
-  { field: 'id', headerName: 'ID', flex: 2 },
+  { field: 'id', headerName: 'Charge Id', flex: 2 },
   {
     field: 'provider',
     headerName: 'Provider',
@@ -62,6 +69,11 @@ const columns: GridColDef[] = [
     field: 'amount',
     headerName: 'Amount',
     flex: 1,
+    renderCell: ({ formattedValue }) => {
+      return (
+        <Typography variant="subtitle2">{amountBrl(formattedValue)}</Typography>
+      );
+    },
   },
   {
     field: 'status',
@@ -73,7 +85,7 @@ const columns: GridColDef[] = [
   },
   {
     field: 'e2e_id',
-    headerName: 'E2E',
+    headerName: 'Authorization code',
     flex: 2,
   },
 ];

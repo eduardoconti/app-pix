@@ -1,4 +1,4 @@
-import { api } from '@/services/api/api';
+import { api, ApiErrorResponse } from '@/services/api/api';
 import jwt from 'jwt-decode';
 type SignInRequestData = {
   email: string;
@@ -32,8 +32,12 @@ export async function signInRequest({ email, password }: SignInRequestData) {
       },
     };
   } catch (error: any) {
-    console.log(error.response?.data);
-    throw new Error('Api error');
+    if (error?.response?.data) {
+      const response = new ApiErrorResponse();
+      Object.assign(response, error.response.data);
+      throw response;
+    }
+    throw new Error(error?.message ?? 'Internal server error');
   } finally {
   }
 }
