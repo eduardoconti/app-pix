@@ -25,7 +25,6 @@ import PixIcon from '@mui/icons-material/Pix';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Menu, MenuItem, useMediaQuery } from '@mui/material';
-import { red } from '@mui/material/colors';
 import { AuthContext } from '@/context/auth-context';
 import PersonIcon from '@mui/icons-material/Person';
 import Router from 'next/router';
@@ -96,7 +95,11 @@ const ColorMode = () => {
         justifyContent: 'right',
       }}
     >
-      <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode}>
+      <IconButton
+        sx={{ ml: 1 }}
+        onClick={colorMode.toggleColorMode}
+        color="inherit"
+      >
         {theme.palette.mode === 'dark' ? (
           <Brightness7Icon />
         ) : (
@@ -125,17 +128,10 @@ export default function Layout({ children }: React.PropsWithChildren) {
       createTheme({
         palette: {
           primary: {
-            main: '#03d69d',
+            main: '#673ab7',
           },
           secondary: {
-            main: 'rgb(248, 189, 7)',
-          },
-          error: {
-            main: red.A400,
-          },
-          background: {
-            default: mode === 'dark' ? '#121212' : '#F7F7F7',
-            paper: mode === 'dark' ? '#1F1F1F' : '#FEFEFE',
+            main: '#f50057)',
           },
           mode,
         },
@@ -174,13 +170,16 @@ const AppDrawer = ({ children }: React.PropsWithChildren) => {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            sx={{
+              mr: 2,
+              ...(open && { display: 'none' }),
+              alignItems: 'center',
+            }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Woovi Pix
-          </Typography>
+          <MainLogo color="#FFF" size="40px" />
+          <Typography variant="h6">Pix Payments</Typography>
           <ColorMode />
           <UserDropdown />
         </Toolbar>
@@ -259,7 +258,7 @@ const UserDropdown = () => {
         display: 'flex',
       }}
     >
-      <IconButton sx={{ ml: 1 }} onClick={handleDropdownOpen}>
+      <IconButton sx={{ ml: 1 }} onClick={handleDropdownOpen} color="inherit">
         <PersonIcon />
       </IconButton>
 
@@ -284,3 +283,18 @@ const UserDropdown = () => {
     </Box>
   );
 };
+
+function MainLogo({ size, color }: { size?: string; color?: string }) {
+  const defaultSize = '80px';
+  const theme = useTheme();
+  return (
+    <PixIcon
+      sx={{
+        color: color ?? theme.palette.primary.main,
+        width: size ?? defaultSize,
+        height: size ?? defaultSize,
+      }}
+      fontSize="inherit"
+    />
+  );
+}

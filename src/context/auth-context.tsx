@@ -92,7 +92,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         webhook_host,
         name,
       });
-      Router.push('/signin');
+      await Router.push('/signin');
     } catch (error: any) {
       if (error instanceof ApiErrorResponse) {
         setError(error);
