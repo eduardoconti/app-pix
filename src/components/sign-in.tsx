@@ -11,9 +11,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { AuthContext } from '@/context/auth-context';
-import {
-  CircularProgress,
-} from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import AlertMessage from '@/components/alert';
 
 export default function SignIn() {
@@ -117,7 +115,7 @@ function Copyright(props: any) {
     >
       {'Copyright © '}
       <Link color="inherit" href="/signup">
-        Woovi Pix
+        Pix Payments
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}

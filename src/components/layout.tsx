@@ -27,6 +27,7 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Menu, MenuItem, useMediaQuery } from '@mui/material';
 import { AuthContext } from '@/context/auth-context';
 import PersonIcon from '@mui/icons-material/Person';
+import WebhookIcon from '@mui/icons-material/Webhook';
 import Router from 'next/router';
 
 const drawerWidth = 240;
@@ -214,6 +215,15 @@ const AppDrawer = ({ children }: React.PropsWithChildren) => {
                 <PixIcon />
               </ListItemIcon>
               <ListItemText primary={'Pix Charges'} />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => Router.push('/webhooks')}>
+              <ListItemIcon>
+                <WebhookIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Webhooks'} />
             </ListItemButton>
           </ListItem>
         </List>
